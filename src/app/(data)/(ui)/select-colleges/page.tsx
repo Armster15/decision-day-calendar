@@ -57,11 +57,11 @@ export default function SelectColleges() {
         </div>
 
         <div>
-          <AddCustomCollegeModal>
+          {/* <AddCustomCollegeModal>
             <button className="pressable bg-black text-white px-4 py-2">
               Add Custom College
             </button>
-          </AddCustomCollegeModal>
+          </AddCustomCollegeModal> */}
         </div>
       </div>
 
