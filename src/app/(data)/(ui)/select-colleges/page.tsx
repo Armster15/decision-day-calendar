@@ -212,6 +212,10 @@ function CustomCollegeModal({
   customCollege?: CustomCollege;
 }) {
   const [customColleges, setCustomColleges] = useAtom(customCollegesAtom);
+  const [selectedCollegeIds, setSelectedCollegeIds] = useAtom(
+    selectedCollegeIdsAtom
+  );
+
   const id = useId();
 
   const [dateEl, setDateEl] = useState<HTMLInputElement | null>(null);
@@ -262,14 +266,18 @@ function CustomCollegeModal({
         })
       );
     } else {
+      const id = crypto.randomUUID();
+
       setCustomColleges([
         ...customColleges,
         {
           name,
           decisionDate,
-          id: crypto.randomUUID(),
+          id,
         },
       ]);
+
+      setSelectedCollegeIds((ids) => [...ids, id]);
     }
 
     closeModal();
