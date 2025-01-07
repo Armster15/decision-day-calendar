@@ -66,6 +66,16 @@ export default function Home() {
     <div className="grid grid-cols-4 gap-4">
       {selectedColleges.map((college) => (
         <div className="bg-white p-4" key={college.id}>
+          <img
+            src={`/get-favicon/${encodeURIComponent(
+              college.name + " Website"
+            )}`}
+            alt=""
+            width={72}
+            height={72}
+            className="mb-4 shadow h-[72px] w-[72px]"
+          />
+
           <p className="font-semibold mb-1">{college.name}</p>
           <p className="mb-4">{college.decisionDate.toLocaleString()}</p>
 

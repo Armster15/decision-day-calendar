@@ -8,6 +8,7 @@ import {
   useState,
 } from "react";
 import { clsx } from "clsx";
+import { useQueryState, parseAsBoolean } from "nuqs";
 import { DataContext } from "$/lib/context";
 import { useAtom } from "jotai";
 import { selectedCollegeIdsAtom } from "$/lib/atoms";
@@ -21,8 +22,10 @@ export default function SelectColleges() {
   );
 
   const formId = useId();
-  const [showOnlySelectedColleges, setShowOnlySelectedColleges] =
-    useState(false);
+  const [showOnlySelectedColleges, setShowOnlySelectedColleges] = useQueryState(
+    "selected",
+    parseAsBoolean.withDefault(false)
+  );
 
   function handleSelectCollege(collegeId: string) {
     if (selectedCollegeIds.includes(collegeId)) {
@@ -89,6 +92,7 @@ export default function SelectColleges() {
 
 function AddCustomCollegeModal({ children }: PropsWithChildren) {
   let [isOpen, setIsOpen] = useState(false);
+  const id = useId();
 
   function closeModal() {
     setIsOpen(false);
@@ -133,27 +137,31 @@ function AddCustomCollegeModal({ children }: PropsWithChildren) {
                 leaveFrom="opacity-100 scale-100"
                 leaveTo="opacity-0 scale-95"
               >
-                <Dialog.Panel className="w-full max-w-md transform overflow-hidden rounded-2xl bg-white p-6 text-left align-middle shadow-xl transition-all">
+                <Dialog.Panel className="w-full max-w-xl transform overflow-hidden rounded-2xl bg-white p-6 text-left align-middle shadow-xl transition-all">
                   <Dialog.Title
                     as="h3"
-                    className="text-lg font-medium leading-6 text-gray-900"
+                    className="text-lg font-medium leading-6 text-gray-900 mb-4"
                   >
-                    Payment successful
+                    Add Custom College
                   </Dialog.Title>
-                  <div className="mt-2">
-                    <p className="text-sm text-gray-500">
-                      Your payment has been successfully submitted. We’ve sent
-                      you an email with all of the details of your order.
-                    </p>
-                  </div>
 
-                  <div className="mt-4">
+                  <form>
+                    <label className="mb-1 block" htmlFor={id + "name"}>
+                      Name
+                    </label>
+                    <input
+                      id={id + "name"}
+                      className="border-2 border-black p-2 w-full"
+                    />
+                  </form>
+
+                  <div className="mt-8">
                     <button
                       type="button"
-                      className="inline-flex justify-center rounded-md border border-transparent bg-blue-100 px-4 py-2 text-sm font-medium text-blue-900 hover:bg-blue-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2"
+                      className="pressable px-4 py-2 bg-black text-white"
                       onClick={closeModal}
                     >
-                      Got it, thanks!
+                      Add
                     </button>
                   </div>
                 </Dialog.Panel>
