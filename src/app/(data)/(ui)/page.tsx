@@ -71,9 +71,9 @@ export default function Home() {
               college.name + " Website"
             )}`}
             alt=""
-            width={72}
-            height={72}
-            className="mb-4 shadow h-[72px] w-[72px]"
+            width={64}
+            height={64}
+            className="mb-4 shadow h-[64px] w-[64px]"
           />
 
           <p className="font-semibold mb-1">{college.name}</p>
