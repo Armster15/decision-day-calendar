@@ -1,7 +1,6 @@
 "use client";
 
 import { useContext, useEffect, useState } from "react";
-import { clsx } from "clsx";
 import { DataContext } from "$/lib/context";
 import { useAtom } from "jotai";
 import { customCollegesAtom, selectedCollegeIdsAtom } from "$/lib/atoms";
@@ -14,6 +13,7 @@ import {
   differenceInMinutes,
   differenceInSeconds,
 } from "date-fns";
+import AboutPage from "./about/page";
 
 function getFormattedDifference(date1: Date, date2: Date) {
   const start = new Date(date1);
@@ -54,11 +54,19 @@ export default function Home() {
 
   if (selectedColleges.length === 0) {
     return (
-      <div>
-        <p className="mb-4">You {"don't"} have any colleges selected!</p>
-        <Link className="link" href="/select-colleges">
-          Select Colleges to Follow
-        </Link>
+      <div className="mt-2">
+        <div className="text-lg">
+          <p className="mb-4">
+            You {"don't"} have any colleges selected! Select some to build your
+            tracker.
+          </p>
+          <Link className="link" href="/select-colleges">
+            Select Colleges to Follow
+          </Link>
+        </div>
+
+        <hr className="border my-8 border-black" />
+        <AboutPage />
       </div>
     );
   }

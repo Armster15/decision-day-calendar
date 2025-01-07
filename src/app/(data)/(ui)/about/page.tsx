@@ -1,8 +1,8 @@
 "use client";
 
-export default function Advanced() {
+export default function AboutPage() {
   return (
-    <main className="space-y-6">
+    <div className="space-y-6">
       <div className="">
         <p className="mb-2">Why use this?</p>
         <ul className="list-disc ml-8 space-y-2">
@@ -40,6 +40,6 @@ export default function Advanced() {
           armaan
         </a>
       </p>
-    </main>
+    </div>
   );
 }
