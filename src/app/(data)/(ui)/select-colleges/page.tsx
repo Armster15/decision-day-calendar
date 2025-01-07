@@ -134,7 +134,9 @@ export default function SelectColleges() {
             >
               {college.tag}
             </p>
-            <p>{new Date(college.decisionDate).toLocaleString()}</p>
+            <p className="tabular-nums">
+              {new Date(college.decisionDate).toLocaleString()}
+            </p>
             <p>{college.notes}</p>
           </button>
         ))}
@@ -177,7 +179,9 @@ function CustomCollege({
         onClick={() => handleSelectCollege(college.id)}
       >
         <p className="font-medium mb-1">{college.name}</p>
-        <p>{new Date(college.decisionDate).toLocaleString()}</p>
+        <p className="tabular-nums">
+          {new Date(college.decisionDate).toLocaleString()}
+        </p>
 
         <div className="mt-4 flex items-center justify-start gap-2">
           <button
