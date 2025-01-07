@@ -2,19 +2,22 @@
 
 export default function Advanced() {
   return (
-    <main className="space-y-4">
+    <main className="space-y-6">
       <div className="">
-        <p>Why use this?</p>
-        <ul className="list-disc ml-8">
+        <p className="mb-2">Why use this?</p>
+        <ul className="list-disc ml-8 space-y-2">
           <li>
-            {
-              "Most data for colleges is already here so minimal work is required: just select what colleges you want to follow"
-            }
+            <span className="font-medium">{"No Effort to Set Up: "}</span>
+            Just select what colleges you want to track
           </li>
-          <li>{"Flexible: if a college isn't here, simply add it"}</li>
           <li>
+            <span className="font-medium">{"Flexible: "}</span>
+            {"if a college isn't already there, simply add it"}
+          </li>
+          <li>
+            <span className="font-medium">{"Up to date: "}</span>
             {
-              "Up to date: college decision days are automatically updated when new information comes out"
+              "college decision days are automatically updated when new information comes out, so you don't need to worry about manually maintaining anything"
             }
           </li>
         </ul>
