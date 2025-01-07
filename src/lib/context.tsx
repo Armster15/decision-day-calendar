@@ -14,7 +14,7 @@ export type Data = {
   name: string;
   tag: string;
   confirmed: string;
-  decisionDate: string;
+  decisionDate: Date;
   notes: string;
   /** Name + tag */
   id: string;

@@ -78,7 +78,7 @@ export default function SelectColleges() {
           >
             <p>{college.name}</p>
             <p>{college.tag}</p>
-            <p>{college.decisionDate}</p>
+            <p>{college.decisionDate.toLocaleString()}</p>
             <p>{college.notes}</p>
           </button>
         ))}
