@@ -29,7 +29,7 @@ export default function Home() {
   return (
     <div>
       {selectedColleges.map((college) => (
-        <div>{college.name}</div>
+        <div key={college.id}>{college.name}</div>
       ))}
     </div>
   );
