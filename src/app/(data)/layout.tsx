@@ -3,8 +3,8 @@ import { JSDOM } from "jsdom";
 import { DataContextProvider, RawData, type Data } from "$/lib/context";
 import { dummyData } from "./dummy-data";
 
-// Refetch every day
-export let revalidate = 60 * 60 * 24;
+// Refetch every 12 hours
+export let revalidate = 60 * 60 * 12;
 
 // ChatGPT
 function tableToJson(table: HTMLTableElement) {

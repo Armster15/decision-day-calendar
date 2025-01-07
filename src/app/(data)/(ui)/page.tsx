@@ -13,9 +13,9 @@ export default function Home() {
     selectedCollegeIdsAtom
   );
 
-  const selectedColleges = data.filter((college) =>
-    selectedCollegeIds.includes(college.id)
-  );
+  const selectedColleges = data
+    .filter((college) => selectedCollegeIds.includes(college.id))
+    .sort((a, b) => +a.decisionDate - +b.decisionDate);
 
   if (selectedColleges.length === 0) {
     return (
@@ -29,7 +29,9 @@ export default function Home() {
   return (
     <div>
       {selectedColleges.map((college) => (
-        <div key={college.id}>{college.name}</div>
+        <div key={college.id}>
+          {college.name} - {college.decisionDate.toLocaleString()}
+        </div>
       ))}
     </div>
   );

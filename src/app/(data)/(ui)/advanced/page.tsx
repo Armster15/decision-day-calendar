@@ -10,7 +10,19 @@ export default function Advanced() {
 
   return (
     <main>
-      <p>Data last revalidated: {revalidateDate.toLocaleString()}</p>
+      <p className="mb-2">
+        Data is provided by{" "}
+        <a
+          className="underline"
+          href="https://applyingto.college/"
+          target="_blank"
+        >
+          ApplyingToCollege
+        </a>{" "}
+        and is automatically synced every 12 hours.
+      </p>
+
+      <p className="mb-4">Last synced: {revalidateDate.toLocaleString()}</p>
 
       <form action={formAction}>
         <button
@@ -18,7 +30,7 @@ export default function Advanced() {
           type="submit"
           disabled={isPending}
         >
-          {isPending ? "Revalidating..." : "Revalidate data"}
+          {isPending ? "Syncing..." : "Resync data"}
         </button>
       </form>
     </main>
