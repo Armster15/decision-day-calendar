@@ -22,13 +22,16 @@ export default function UILayout({ children }: PropsWithChildren) {
           </h1>
 
           <div className="flex gap-4">
-            <Link className="pressable" href="/">
+            <Link className="pressable text-center" href="/">
               Home
             </Link>
-            <Link className="pressable" href="/select-colleges">
+            <Link className="pressable text-center" href="/select-colleges">
               Select Colleges
             </Link>
-            <Link className="pressable" href="/advanced">
+            <Link className="pressable text-center" href="/about">
+              About
+            </Link>
+            <Link className="pressable text-center" href="/advanced">
               Advanced
             </Link>
           </div>
