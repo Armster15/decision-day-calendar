@@ -4,7 +4,7 @@ import { DataContextProvider, type Data } from "$/lib/context";
 import { dummyData } from "./dummy-data";
 
 // Refetch every day
-export const revalidate = 60 * 60 * 24;
+export let revalidate = 60 * 60 * 24;
 
 // ChatGPT
 function tableToJson(table: HTMLTableElement) {
