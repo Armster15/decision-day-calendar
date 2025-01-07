@@ -45,7 +45,10 @@ export default function Home() {
   );
   const [customColleges] = useAtom(customCollegesAtom);
 
-  const selectedColleges = [...data, ...customColleges]
+  const selectedColleges: ((typeof data)[0] | (typeof customColleges)[0])[] = [
+    ...data,
+    ...customColleges,
+  ]
     .filter((college) => selectedCollegeIds.includes(college.id))
     .sort((a, b) => +new Date(a.decisionDate) - +new Date(b.decisionDate));
 
@@ -82,6 +85,10 @@ export default function Home() {
           <p className="text-lg mb-4">
             <Countdown date={new Date(college.decisionDate)} />
           </p>
+
+          {"confirmed" in college && (
+            <p className="mb-4 text-sm text-gray-500">{college.confirmed}</p>
+          )}
         </div>
       ))}
     </div>
