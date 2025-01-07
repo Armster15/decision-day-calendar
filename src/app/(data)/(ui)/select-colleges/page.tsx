@@ -119,8 +119,21 @@ export default function SelectColleges() {
             key={college.id}
             onClick={() => handleSelectCollege(college.id)}
           >
-            <p>{college.name}</p>
-            <p>{college.tag}</p>
+            <p className="font-medium mb-1">{college.name}</p>
+            <p
+              className={clsx(
+                "w-fit px-2 py-1 text-black mb-2",
+                college.tag.includes("ED")
+                  ? "bg-yellow-100"
+                  : college.tag.includes("RD")
+                  ? "bg-green-100"
+                  : college.tag.includes("REA")
+                  ? "bg-red-100"
+                  : "bg-gray-100"
+              )}
+            >
+              {college.tag}
+            </p>
             <p>{new Date(college.decisionDate).toLocaleString()}</p>
             <p>{college.notes}</p>
           </button>
@@ -163,7 +176,7 @@ function CustomCollege({
         key={college.id}
         onClick={() => handleSelectCollege(college.id)}
       >
-        <p>{college.name}</p>
+        <p className="font-medium mb-1">{college.name}</p>
         <p>{new Date(college.decisionDate).toLocaleString()}</p>
 
         <div className="mt-4 flex items-center justify-start gap-2">
