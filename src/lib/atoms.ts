@@ -3,7 +3,7 @@ import { atomWithStorage } from "jotai/utils";
 
 export type CustomCollege = {
   name: string;
-  decisionDate: Date;
+  decisionDate: string;
   id: string;
 };
 
@@ -12,16 +12,7 @@ export const selectedCollegeIdsAtom = atomWithStorage<string[]>(
   []
 );
 
-export const __customCollegesAtom = atomWithStorage<CustomCollege[]>(
+export const customCollegesAtom = atomWithStorage<CustomCollege[]>(
   "custom-colleges",
   []
-);
-
-export const customCollegesAtom = atom(
-  (get) =>
-    get(__customCollegesAtom).map((college) => ({
-      ...college,
-      decisionDate: new Date(college.decisionDate),
-    })),
-  (_get, set, data: CustomCollege[]) => set(__customCollegesAtom, data)
 );

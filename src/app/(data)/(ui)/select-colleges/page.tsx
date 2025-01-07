@@ -121,7 +121,7 @@ export default function SelectColleges() {
           >
             <p>{college.name}</p>
             <p>{college.tag}</p>
-            <p>{college.decisionDate.toLocaleString()}</p>
+            <p>{new Date(college.decisionDate).toLocaleString()}</p>
             <p>{college.notes}</p>
           </button>
         ))}
@@ -164,7 +164,7 @@ function CustomCollege({
         onClick={() => handleSelectCollege(college.id)}
       >
         <p>{college.name}</p>
-        <p>{college.decisionDate.toLocaleString()}</p>
+        <p>{new Date(college.decisionDate).toLocaleString()}</p>
 
         <div className="mt-4 flex items-center justify-start gap-2">
           <button
@@ -219,8 +219,8 @@ function CustomCollegeModal({
 
   useEffect(() => {
     if (isOpen && customCollege && dateEl && timeEl) {
-      dateEl.valueAsDate = customCollege.decisionDate;
-      timeEl.valueAsDate = customCollege.decisionDate;
+      dateEl.valueAsDate = new Date(customCollege.decisionDate);
+      timeEl.valueAsDate = new Date(customCollege.decisionDate);
     }
   }, [isOpen, dateEl, timeEl]);
 
@@ -245,7 +245,7 @@ function CustomCollegeModal({
       return;
     }
 
-    const decisionDate = new Date(`${date} ${time}`.trim());
+    const decisionDate = new Date(`${date} ${time}`.trim()).toISOString();
 
     if (customCollege) {
       setCustomColleges(

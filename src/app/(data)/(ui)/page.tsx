@@ -47,7 +47,7 @@ export default function Home() {
 
   const selectedColleges = [...data, ...customColleges]
     .filter((college) => selectedCollegeIds.includes(college.id))
-    .sort((a, b) => +a.decisionDate - +b.decisionDate);
+    .sort((a, b) => +new Date(a.decisionDate) - +new Date(b.decisionDate));
 
   if (selectedColleges.length === 0) {
     return (
@@ -78,10 +78,12 @@ export default function Home() {
           />
 
           <p className="font-semibold mb-1">{college.name}</p>
-          <p className="mb-4">{college.decisionDate.toLocaleString()}</p>
+          <p className="mb-4">
+            {new Date(college.decisionDate).toLocaleString()}
+          </p>
 
           <p className="text-lg mb-4">
-            <Countdown date={college.decisionDate} />
+            <Countdown date={new Date(college.decisionDate)} />
           </p>
         </div>
       ))}
