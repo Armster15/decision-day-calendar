@@ -11,7 +11,7 @@ import { clsx } from "clsx";
 import { useQueryState, parseAsBoolean } from "nuqs";
 import { DataContext } from "$/lib/context";
 import { useAtom } from "jotai";
-import { selectedCollegeIdsAtom } from "$/lib/atoms";
+import { customCollegesAtom, selectedCollegeIdsAtom } from "$/lib/atoms";
 import { Dialog, Transition } from "@headlessui/react";
 import { Slot } from "@radix-ui/react-slot";
 
@@ -20,6 +20,7 @@ export default function SelectColleges() {
   const [selectedCollegeIds, setSelectedCollegeIds] = useAtom(
     selectedCollegeIdsAtom
   );
+  const [customColleges] = useAtom(customCollegesAtom);
 
   const formId = useId();
   const [showOnlySelectedColleges, setShowOnlySelectedColleges] = useQueryState(
@@ -72,11 +73,11 @@ export default function SelectColleges() {
         </div>
 
         <div>
-          {/* <AddCustomCollegeModal>
+          <AddCustomCollegeModal>
             <button className="pressable bg-black text-white px-4 py-2">
               Add Custom College
             </button>
-          </AddCustomCollegeModal> */}
+          </AddCustomCollegeModal>
         </div>
       </div>
 
@@ -86,6 +87,31 @@ export default function SelectColleges() {
         value={filterText}
         onChange={(ev) => setFilterText(ev.target.value)}
       />
+
+      {customColleges.length > 0 ? (
+        <div className="mb-16">
+          <h2 className="mb-2 font-semibold">Custom Colleges</h2>
+          <div className="grid grid-cols-3 gap-4">
+            {customColleges.map((college) => (
+              <button
+                className={clsx(
+                  "pressable p-4 text-left",
+                  selectedCollegeIds.includes(college.id)
+                    ? "bg-blue-500 text-white"
+                    : "bg-white"
+                )}
+                key={college.id}
+                onClick={() => handleSelectCollege(college.id)}
+              >
+                <p>{college.name}</p>
+                <p>{college.decisionDate.toLocaleString()}</p>
+              </button>
+            ))}
+          </div>
+        </div>
+      ) : (
+        <></>
+      )}
 
       {colleges.length === 0 && <p>No colleges found</p>}
 
@@ -114,6 +140,7 @@ export default function SelectColleges() {
 
 function AddCustomCollegeModal({ children }: PropsWithChildren) {
   let [isOpen, setIsOpen] = useState(false);
+  const [customColleges, setCustomColleges] = useAtom(customCollegesAtom);
   const id = useId();
 
   function closeModal() {
@@ -123,6 +150,33 @@ function AddCustomCollegeModal({ children }: PropsWithChildren) {
   function openModal() {
     setIsOpen(true);
   }
+
+  const handleFormSubmit: React.FormEventHandler<HTMLFormElement> = (ev) => {
+    ev.preventDefault();
+    const formData = new FormData(ev.currentTarget);
+
+    const name = formData.get("name")?.toString();
+    const date = formData.get("date")?.toString();
+    const time = formData.get("time")?.toString();
+
+    if (!name || !date) {
+      alert("Please provide a name and/or date");
+      return;
+    }
+
+    const decisionDate = new Date(`${date} ${time}`.trim());
+
+    setCustomColleges([
+      ...customColleges,
+      {
+        name,
+        decisionDate,
+        id: crypto.randomUUID(),
+      },
+    ]);
+
+    closeModal();
+  };
 
   return (
     <>
@@ -167,25 +221,53 @@ function AddCustomCollegeModal({ children }: PropsWithChildren) {
                     Add Custom College
                   </Dialog.Title>
 
-                  <form>
-                    <label className="mb-1 block" htmlFor={id + "name"}>
-                      Name
-                    </label>
-                    <input
-                      id={id + "name"}
-                      className="border-2 border-black p-2 w-full"
-                    />
-                  </form>
+                  <form onSubmit={handleFormSubmit} className="space-y-4">
+                    <div className="">
+                      <label className="mb-1 block" htmlFor={id + "name"}>
+                        Name
+                      </label>
+                      <input
+                        name="name"
+                        placeholder="Hogwarts School of Witchcraft and Wizardry"
+                        id={id + "name"}
+                        className="border-2 border-black p-2 w-full"
+                        required
+                        min={3}
+                        autoComplete="off"
+                      />
+                    </div>
 
-                  <div className="mt-8">
-                    <button
-                      type="button"
-                      className="pressable px-4 py-2 bg-black text-white"
-                      onClick={closeModal}
-                    >
-                      Add
-                    </button>
-                  </div>
+                    <div className="">
+                      <label className="mb-1 block" htmlFor={id + "date"}>
+                        Date
+                      </label>
+                      <input
+                        name="date"
+                        id={id + "date"}
+                        className="border-2 border-black p-2 w-full"
+                        type="date"
+                        required
+                      />
+                    </div>
+
+                    <div className="">
+                      <label className="mb-1 block" htmlFor={id + "time"}>
+                        Time (optional)
+                      </label>
+                      <input
+                        name="time"
+                        type="time"
+                        id={id + "time"}
+                        className="border-2 border-black p-2 w-full"
+                      />
+                    </div>
+
+                    <div className="!mt-8">
+                      <button className="pressable px-4 py-2 bg-black text-white">
+                        Add
+                      </button>
+                    </div>
+                  </form>
                 </Dialog.Panel>
               </Transition.Child>
             </div>

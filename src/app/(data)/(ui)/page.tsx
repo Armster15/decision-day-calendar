@@ -4,7 +4,7 @@ import { useContext, useEffect, useState } from "react";
 import { clsx } from "clsx";
 import { DataContext } from "$/lib/context";
 import { useAtom } from "jotai";
-import { selectedCollegeIdsAtom } from "$/lib/atoms";
+import { customCollegesAtom, selectedCollegeIdsAtom } from "$/lib/atoms";
 import Link from "next/link";
 import {
   differenceInYears,
@@ -43,8 +43,9 @@ export default function Home() {
   const [selectedCollegeIds, setSelectedCollegeIds] = useAtom(
     selectedCollegeIdsAtom
   );
+  const [customColleges] = useAtom(customCollegesAtom);
 
-  const selectedColleges = data
+  const selectedColleges = [...data, ...customColleges]
     .filter((college) => selectedCollegeIds.includes(college.id))
     .sort((a, b) => +a.decisionDate - +b.decisionDate);
 
