@@ -14,7 +14,7 @@ export default function UILayout({ children }: PropsWithChildren) {
   return (
     <div className="bg-gray-100 min-h-screen">
       <nav className="sticky top-0 z-10 w-full backdrop-blur-[12px]">
-        <div className="flex justify-between items-center p-8 border-b border-black w-full">
+        <div className="flex flex-col gap-3 sm:flex-row sm:gap-0 justify-between items-center p-8 border-b border-black w-full">
           <h1>
             <Link className="font-semibold text-lg" href="/">
               Decision Day Calendar

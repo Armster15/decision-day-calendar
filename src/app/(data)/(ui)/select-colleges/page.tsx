@@ -56,7 +56,7 @@ export default function SelectColleges() {
 
   return (
     <main>
-      <div className="mb-4 flex justify-between items-center">
+      <div className="mb-4 flex flex-col gap-4 sm:gap-0 sm:flex-row justify-between items-center">
         <div className="flex items-center justify-center gap-1 pressable">
           <input
             id={formId + "show-only-selected-colleges"}
@@ -91,7 +91,7 @@ export default function SelectColleges() {
       {customColleges.length > 0 ? (
         <div className="mb-16">
           <h2 className="mb-2 font-semibold">Custom Colleges</h2>
-          <div className="grid grid-cols-3 gap-4">
+          <div className="grid sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
             {customColleges.map((college) => (
               <CustomCollege
                 key={college.id}
@@ -107,7 +107,7 @@ export default function SelectColleges() {
 
       {colleges.length === 0 && <p>No colleges found</p>}
 
-      <div className="grid grid-cols-3 gap-4">
+      <div className="grid sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
         {colleges.map((college) => (
           <button
             className={clsx(
