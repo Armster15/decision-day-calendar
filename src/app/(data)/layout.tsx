@@ -1,6 +1,6 @@
 import { PropsWithChildren } from "react";
 import { JSDOM } from "jsdom";
-import { DataContextProvider, type Data } from "$/lib/context";
+import { DataContextProvider, RawData, type Data } from "$/lib/context";
 import { dummyData } from "./dummy-data";
 
 // Refetch every day
@@ -57,12 +57,52 @@ function getTextWithSpaces(node: Node) {
   return textArray.join(" ");
 }
 
+function rawDataToData(rawData: RawData): Data {
+  let data: Data = [];
+
+  let ids: string[] = [];
+  let timesDuplicateIdOccurred: { [id: string]: number } = {};
+
+  for (const college of rawData) {
+    const name = college.Name.startsWith("🎓 ")
+      ? college.Name.substring("🎓 ".length)
+      : college.Name;
+
+    // Generate a stable id
+    let id = name + " " + college.Tag;
+    id = id.toLowerCase().replaceAll(" ", "-");
+
+    // If duplicate id, add a number prefix to it
+    if (ids.includes(id)) {
+      if (!Object.keys(timesDuplicateIdOccurred).includes(id)) {
+        timesDuplicateIdOccurred[id] = 0;
+      }
+
+      timesDuplicateIdOccurred[id] += 1;
+      id += "-" + timesDuplicateIdOccurred[id];
+    }
+
+    ids.push(id);
+
+    data.push({
+      confirmed: college.Confirmed,
+      decisionDate: college["Decision Date"],
+      id,
+      name,
+      notes: college.Notes,
+      tag: college.Tag,
+    });
+  }
+
+  return data;
+}
+
 export default async function Layout({ children }: PropsWithChildren) {
   // So we don't make a ton of fetch requests in dev mode
   if (process.env.NODE_ENV === "development") {
     return (
       <DataContextProvider
-        value={{ data: dummyData, revalidateDate: new Date(0) }}
+        value={{ data: rawDataToData(dummyData), revalidateDate: new Date(0) }}
       >
         {children}
       </DataContextProvider>
@@ -85,17 +125,11 @@ export default async function Layout({ children }: PropsWithChildren) {
     throw new Error("No table!");
   }
 
-  const rawJson = tableToJson(table) as Data;
-
-  const json = rawJson.map((val) => ({
-    ...val,
-    Name: val.Name.startsWith("🎓 ")
-      ? val.Name.substring("🎓 ".length)
-      : val.Name,
-  })) satisfies Data;
+  const rawData = tableToJson(table) as RawData;
+  const data = rawDataToData(rawData);
 
   return (
-    <DataContextProvider value={{ data: json, revalidateDate }}>
+    <DataContextProvider value={{ data: data, revalidateDate }}>
       {children}
     </DataContextProvider>
   );

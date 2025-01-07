@@ -13,7 +13,11 @@ export default function Advanced() {
       <p>Data last revalidated: {revalidateDate.toLocaleString()}</p>
 
       <form action={formAction}>
-        <button type="submit" disabled={isPending}>
+        <button
+          className="bg-black text-white p-4"
+          type="submit"
+          disabled={isPending}
+        >
           {isPending ? "Revalidating..." : "Revalidate data"}
         </button>
       </form>

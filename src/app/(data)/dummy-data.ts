@@ -1,6 +1,6 @@
-import { Data } from "$/lib/context";
+import { RawData } from "$/lib/context";
 
-export const dummyData: Data = [
+export const dummyData: RawData = [
   {
     Name: "American University",
     Tag: "ED",
