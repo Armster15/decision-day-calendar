@@ -12,11 +12,7 @@ export default function Advanced() {
     <main>
       <p className="mb-2">
         Data is provided by{" "}
-        <a
-          className="underline"
-          href="https://applyingto.college/"
-          target="_blank"
-        >
+        <a className="link" href="https://applyingto.college/" target="_blank">
           ApplyingToCollege
         </a>{" "}
         and is automatically synced every 12 hours.

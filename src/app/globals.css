@@ -9,3 +9,7 @@ html {
 .pressable {
   @apply active:scale-[0.99] active:opacity-80 duration-150;
 }
+
+.link {
+  @apply text-blue-500 pressable underline;
+}

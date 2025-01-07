@@ -53,10 +53,7 @@ export default function Home() {
     return (
       <div>
         <p className="mb-4">You {"don't"} have any colleges selected!</p>
-        <Link
-          className="text-blue-500 pressable underline"
-          href="/select-colleges"
-        >
+        <Link className="link" href="/select-colleges">
           Select Colleges to Follow
         </Link>
       </div>
