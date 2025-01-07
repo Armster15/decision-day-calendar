@@ -385,7 +385,7 @@ function CustomCollegeModal({
 
                     <div className="!mt-8">
                       <button className="pressable px-4 py-2 bg-black text-white">
-                        {customCollege ? "Edit" : "Add"}
+                        {customCollege ? "Save" : "Add"}
                       </button>
                     </div>
                   </form>
