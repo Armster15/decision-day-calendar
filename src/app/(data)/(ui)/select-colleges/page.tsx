@@ -247,7 +247,7 @@ function CustomCollegeModal({
         .toString()
         .padStart(2, "0")}`;
     }
-  }, [isOpen, dateEl, timeEl]);
+  }, [isOpen, customCollege, dateEl, timeEl]);
 
   function closeModal() {
     setIsOpen(false);
