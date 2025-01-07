@@ -47,7 +47,7 @@ export default function SelectColleges() {
 
     if (filterText.trim() !== "") {
       colleges = colleges.filter((college) =>
-        college.name.toLowerCase().includes(filterText.trim())
+        college.name.toLowerCase().includes(filterText.toLowerCase().trim())
       );
     }
 
