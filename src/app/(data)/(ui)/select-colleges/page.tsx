@@ -236,8 +236,16 @@ function CustomCollegeModal({
 
   useEffect(() => {
     if (isOpen && customCollege && dateEl && timeEl) {
-      dateEl.valueAsDate = new Date(customCollege.decisionDate);
-      timeEl.valueAsDate = new Date(customCollege.decisionDate);
+      const decisionDate = new Date(customCollege.decisionDate);
+
+      dateEl.valueAsDate = decisionDate;
+      timeEl.value = `${decisionDate
+        .getHours()
+        .toString()
+        .padStart(2, "0")}:${decisionDate
+        .getMinutes()
+        .toString()
+        .padStart(2, "0")}`;
     }
   }, [isOpen, dateEl, timeEl]);
 
