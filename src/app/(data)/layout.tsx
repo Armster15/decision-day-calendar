@@ -191,8 +191,15 @@ export default async function Layout({ children }: PropsWithChildren) {
     );
   }
 
+  const currentDate = new Date();
+  const CLASS_YEAR =
+    // [Jan, July] => year + 5; [August, December] => year + 4
+    0 <= currentDate.getMonth() && currentDate.getMonth() <= 6
+      ? currentDate.getFullYear() + 4
+      : currentDate.getFullYear() + 5;
+
   const res = await fetch(
-    "https://applyingto.college/decision-calendar/class-of-2029"
+    `https://applyingto.college/decision-calendar/class-of-${CLASS_YEAR}`
   );
   const resDateStr = res.headers.get("Date");
   const revalidateDate = resDateStr ? new Date(resDateStr) : new Date();
