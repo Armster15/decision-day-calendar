@@ -10,7 +10,7 @@
   },
   "dependencies": {
     "@headlessui/react": "^2.2.0",
-    "@radix-ui/react-slot": "^1.1.1",
+    "@splitbee/web": "^0.3.0",
     "clsx": "^2.1.1",
     "date-fns": "^4.1.0",
     "jotai": "^2.11.0",

@@ -2,6 +2,7 @@
 
 import { useEffect, useState, type PropsWithChildren } from "react";
 import Link from "next/link";
+import splitbee from "@splitbee/web";
 
 export default function UILayout({ children }: PropsWithChildren) {
   const [isReady, setIsReady] = useState(false);
@@ -9,6 +10,13 @@ export default function UILayout({ children }: PropsWithChildren) {
   // Don't render content with SSR
   useEffect(() => {
     setIsReady(true);
+
+    if (process.env.NODE_ENV === "production") {
+      splitbee.init({
+        scriptUrl: "/bee.js",
+        apiUrl: "/_hive",
+      });
+    }
   }, []);
 
   return (
