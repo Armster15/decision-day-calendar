@@ -26,6 +26,7 @@ export default function SelectColleges() {
     "selected",
     parseAsBoolean.withDefault(false)
   );
+  const [filterText, setFilterText] = useState("");
 
   function handleSelectCollege(collegeId: string) {
     if (selectedCollegeIds.includes(collegeId)) {
@@ -35,13 +36,27 @@ export default function SelectColleges() {
     }
   }
 
-  const colleges = showOnlySelectedColleges
-    ? data.filter((college) => selectedCollegeIds.includes(college.id))
-    : data;
+  const colleges = (() => {
+    let colleges: typeof data = data;
+
+    if (showOnlySelectedColleges) {
+      colleges = colleges.filter((college) =>
+        selectedCollegeIds.includes(college.id)
+      );
+    }
+
+    if (filterText.trim() !== "") {
+      colleges = colleges.filter((college) =>
+        college.name.toLowerCase().includes(filterText.trim())
+      );
+    }
+
+    return colleges;
+  })();
 
   return (
     <main>
-      <div className="mb-6 flex justify-between items-center">
+      <div className="mb-4 flex justify-between items-center">
         <div className="flex items-center justify-center gap-1 pressable">
           <input
             id={formId + "show-only-selected-colleges"}
@@ -64,6 +79,13 @@ export default function SelectColleges() {
           </AddCustomCollegeModal> */}
         </div>
       </div>
+
+      <input
+        className="bg-white p-4 border-2 border-black mb-6 w-full"
+        placeholder="Filter"
+        value={filterText}
+        onChange={(ev) => setFilterText(ev.target.value)}
+      />
 
       {colleges.length === 0 && <p>No colleges found</p>}
 
