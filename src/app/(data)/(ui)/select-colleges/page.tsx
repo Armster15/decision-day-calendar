@@ -263,11 +263,15 @@ function CustomCollegeModal({
 
     const name = formData.get("name")?.toString();
     const date = formData.get("date")?.toString();
-    const time = formData.get("time")?.toString();
+    let time = formData.get("time")?.toString();
 
     if (!name || !date) {
       alert("Please provide a name and/or date");
       return;
+    }
+
+    if (!time || time.trim() === "") {
+      time = "00:00";
     }
 
     const decisionDate = new Date(`${date} ${time}`.trim()).toISOString();
