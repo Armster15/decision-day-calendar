@@ -3,6 +3,8 @@ export let revalidate = 60 * 60 * 72;
 export const dynamicParams = true;
 export const dynamic = "force-static";
 
+import { JSDOM } from "jsdom";
+
 // Gets first URL from "I'm Feeling Lucky" then uses that URL to get favicon
 export async function GET(
   request: Request,
@@ -12,13 +14,16 @@ export async function GET(
   console.log(`Generating image for ${query}`);
 
   const imFeelingLuckyRes = await fetch(
-    `https://www.google.com/search?q=${encodeURIComponent(
-      query
-    )}&btnI=I%27m+Feeling+Lucky`,
+    `https://duckduckgo.com/?t=h_&q=${encodeURIComponent("! " + query)}`,
     { redirect: "manual" }
   );
-  const location = imFeelingLuckyRes.headers.get("Location")!;
-  const url = new URL(location).searchParams.get("q");
+  const redirectPageHTML = await imFeelingLuckyRes.text();
+  const dom = new JSDOM(redirectPageHTML);
+  const meta = dom.window.document.querySelector("meta[http-equiv='refresh']")!;
+  const content = meta.getAttribute("content")!;
+  const urlPart = content.split("url=")[1];
+  const queryParams = new URLSearchParams(urlPart.split("?")[1]);
+  const url = queryParams.get("uddg");
 
   const imageRes = await fetch(
     `https://www.google.com/s2/favicons?domain=${url}&sz=128`
