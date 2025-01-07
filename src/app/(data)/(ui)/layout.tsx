@@ -35,7 +35,12 @@ export default function UILayout({ children }: PropsWithChildren) {
         </div>
       </nav>
 
-      <div className="px-8 py-4">{isReady ? children : <></>}</div>
+      <div className="px-8 py-4">
+        {isReady ? children : <></>}
+        <noscript>
+          <p>Please enable JavaScript</p>
+        </noscript>
+      </div>
     </div>
   );
 }
