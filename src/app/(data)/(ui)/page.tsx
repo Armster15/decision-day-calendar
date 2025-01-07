@@ -79,7 +79,7 @@ export default function Home() {
           <p className="font-semibold mb-1">{college.name}</p>
           <p className="mb-4">{college.decisionDate.toLocaleString()}</p>
 
-          <p className="text-xl">
+          <p className="text-lg mb-4">
             <Countdown date={college.decisionDate} />
           </p>
         </div>
