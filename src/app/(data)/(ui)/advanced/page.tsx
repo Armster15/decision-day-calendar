@@ -14,7 +14,7 @@ export default function Advanced() {
 
       <form action={formAction}>
         <button
-          className="bg-black text-white p-4"
+          className="pressable p-4 bg-black text-white"
           type="submit"
           disabled={isPending}
         >

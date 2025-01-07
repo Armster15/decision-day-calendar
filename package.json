@@ -9,6 +9,8 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@headlessui/react": "^2.2.0",
+    "@radix-ui/react-slot": "^1.1.1",
     "clsx": "^2.1.1",
     "jotai": "^2.11.0",
     "jsdom": "^25.0.1",

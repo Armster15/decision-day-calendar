@@ -20,7 +20,7 @@ export default function Home() {
   if (selectedColleges.length === 0) {
     return (
       <div>
-        <p>You don't have any colleges selected!</p>
+        <p>You {"don't"} have any colleges selected!</p>
         <Link href="/select-colleges">Select Colleges to Follow</Link>
       </div>
     );
