@@ -1,19 +1,16 @@
 "use client";
 
-import {
-  Fragment,
-  PropsWithChildren,
-  useContext,
-  useId,
-  useState,
-} from "react";
+import { Fragment, useContext, useEffect, useId, useState } from "react";
 import { clsx } from "clsx";
 import { useQueryState, parseAsBoolean } from "nuqs";
 import { DataContext } from "$/lib/context";
 import { useAtom } from "jotai";
-import { customCollegesAtom, selectedCollegeIdsAtom } from "$/lib/atoms";
+import {
+  customCollegesAtom,
+  selectedCollegeIdsAtom,
+  type CustomCollege,
+} from "$/lib/atoms";
 import { Dialog, Transition } from "@headlessui/react";
-import { Slot } from "@radix-ui/react-slot";
 
 export default function SelectColleges() {
   const { data } = useContext(DataContext)!;
@@ -28,6 +25,8 @@ export default function SelectColleges() {
     parseAsBoolean.withDefault(false)
   );
   const [filterText, setFilterText] = useState("");
+  const [addCustomCollegeModalOpen, setAddCustomCollegeModalOpen] =
+    useState(false);
 
   function handleSelectCollege(collegeId: string) {
     if (selectedCollegeIds.includes(collegeId)) {
@@ -73,11 +72,12 @@ export default function SelectColleges() {
         </div>
 
         <div>
-          <AddCustomCollegeModal>
-            <button className="pressable bg-black text-white px-4 py-2">
-              Add Custom College
-            </button>
-          </AddCustomCollegeModal>
+          <button
+            className="pressable bg-black text-white px-4 py-2"
+            onClick={() => setAddCustomCollegeModalOpen(true)}
+          >
+            Add Custom College
+          </button>
         </div>
       </div>
 
@@ -93,19 +93,11 @@ export default function SelectColleges() {
           <h2 className="mb-2 font-semibold">Custom Colleges</h2>
           <div className="grid grid-cols-3 gap-4">
             {customColleges.map((college) => (
-              <button
-                className={clsx(
-                  "pressable p-4 text-left",
-                  selectedCollegeIds.includes(college.id)
-                    ? "bg-blue-500 text-white"
-                    : "bg-white"
-                )}
+              <CustomCollege
                 key={college.id}
-                onClick={() => handleSelectCollege(college.id)}
-              >
-                <p>{college.name}</p>
-                <p>{college.decisionDate.toLocaleString()}</p>
-              </button>
+                customCollege={college}
+                handleSelectCollege={handleSelectCollege}
+              />
             ))}
           </div>
         </div>
@@ -134,14 +126,103 @@ export default function SelectColleges() {
           </button>
         ))}
       </div>
+
+      <CustomCollegeModal
+        isOpen={addCustomCollegeModalOpen}
+        setIsOpen={setAddCustomCollegeModalOpen}
+      />
     </main>
   );
 }
 
-function AddCustomCollegeModal({ children }: PropsWithChildren) {
-  let [isOpen, setIsOpen] = useState(false);
+function CustomCollege({
+  customCollege: college,
+  handleSelectCollege,
+}: {
+  customCollege: CustomCollege;
+  handleSelectCollege: (collegeId: string) => void;
+}) {
+  const [selectedCollegeIds] = useAtom(selectedCollegeIdsAtom);
+  const [customColleges, setCustomColleges] = useAtom(customCollegesAtom);
+  const [editCustomCollegeModalOpen, setEditCustomCollegeModalOpen] =
+    useState(false);
+
+  function handleDeleteCustomCollege(collegeId: string) {
+    setCustomColleges(customColleges.filter((c) => c.id !== collegeId));
+  }
+
+  return (
+    <>
+      <button
+        className={clsx(
+          "pressable p-4 text-left",
+          selectedCollegeIds.includes(college.id)
+            ? "bg-blue-500 text-white"
+            : "bg-white"
+        )}
+        key={college.id}
+        onClick={() => handleSelectCollege(college.id)}
+      >
+        <p>{college.name}</p>
+        <p>{college.decisionDate.toLocaleString()}</p>
+
+        <div className="mt-4 flex items-center justify-start gap-2">
+          <button
+            onClick={(ev) => {
+              ev.stopPropagation();
+              setEditCustomCollegeModalOpen(true);
+            }}
+            className="bg-blue-200 p-2 text-black"
+          >
+            Edit
+          </button>
+
+          <button
+            className="bg-red-200 p-2 text-black"
+            onClick={(ev) => {
+              ev.stopPropagation();
+              if (
+                confirm("Are you sure you want to delete this custom college?")
+              ) {
+                handleDeleteCustomCollege(college.id);
+              }
+            }}
+          >
+            Delete
+          </button>
+        </div>
+      </button>
+
+      <CustomCollegeModal
+        isOpen={editCustomCollegeModalOpen}
+        setIsOpen={setEditCustomCollegeModalOpen}
+        customCollege={college}
+      />
+    </>
+  );
+}
+
+function CustomCollegeModal({
+  isOpen,
+  setIsOpen,
+  customCollege,
+}: {
+  isOpen: boolean;
+  setIsOpen: (val: boolean) => void;
+  customCollege?: CustomCollege;
+}) {
   const [customColleges, setCustomColleges] = useAtom(customCollegesAtom);
   const id = useId();
+
+  const [dateEl, setDateEl] = useState<HTMLInputElement | null>(null);
+  const [timeEl, setTimeEl] = useState<HTMLInputElement | null>(null);
+
+  useEffect(() => {
+    if (isOpen && customCollege && dateEl && timeEl) {
+      dateEl.valueAsDate = customCollege.decisionDate;
+      timeEl.valueAsDate = customCollege.decisionDate;
+    }
+  }, [isOpen, dateEl, timeEl]);
 
   function closeModal() {
     setIsOpen(false);
@@ -166,22 +247,36 @@ function AddCustomCollegeModal({ children }: PropsWithChildren) {
 
     const decisionDate = new Date(`${date} ${time}`.trim());
 
-    setCustomColleges([
-      ...customColleges,
-      {
-        name,
-        decisionDate,
-        id: crypto.randomUUID(),
-      },
-    ]);
+    if (customCollege) {
+      setCustomColleges(
+        customColleges.map((college) => {
+          if (college.id === customCollege.id) {
+            return {
+              ...college,
+              decisionDate,
+              name,
+            };
+          }
+
+          return college;
+        })
+      );
+    } else {
+      setCustomColleges([
+        ...customColleges,
+        {
+          name,
+          decisionDate,
+          id: crypto.randomUUID(),
+        },
+      ]);
+    }
 
     closeModal();
   };
 
   return (
     <>
-      <Slot onClick={openModal}>{children}</Slot>
-
       <style jsx global>{`
         html {
           padding-right: 0 !important;
@@ -218,7 +313,9 @@ function AddCustomCollegeModal({ children }: PropsWithChildren) {
                     as="h3"
                     className="text-lg font-medium leading-6 text-gray-900 mb-4"
                   >
-                    Add Custom College
+                    {customCollege
+                      ? "Edit Custom College"
+                      : "Add Custom College"}
                   </Dialog.Title>
 
                   <form onSubmit={handleFormSubmit} className="space-y-4">
@@ -229,6 +326,7 @@ function AddCustomCollegeModal({ children }: PropsWithChildren) {
                       <input
                         name="name"
                         placeholder="Hogwarts School of Witchcraft and Wizardry"
+                        defaultValue={customCollege?.name}
                         id={id + "name"}
                         className="border-2 border-black p-2 w-full"
                         required
@@ -247,6 +345,7 @@ function AddCustomCollegeModal({ children }: PropsWithChildren) {
                         className="border-2 border-black p-2 w-full"
                         type="date"
                         required
+                        ref={setDateEl}
                       />
                     </div>
 
@@ -259,12 +358,13 @@ function AddCustomCollegeModal({ children }: PropsWithChildren) {
                         type="time"
                         id={id + "time"}
                         className="border-2 border-black p-2 w-full"
+                        ref={setTimeEl}
                       />
                     </div>
 
                     <div className="!mt-8">
                       <button className="pressable px-4 py-2 bg-black text-white">
-                        Add
+                        {customCollege ? "Edit" : "Add"}
                       </button>
                     </div>
                   </form>
