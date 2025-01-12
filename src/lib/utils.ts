@@ -1,7 +1,7 @@
 import { format as formatDate } from "date-fns";
 
 export function formatCollegeDecisionDate(date: Date) {
-  let formatStr = "EEE MMM MM, R";
+  let formatStr = "EEE MMM dd, yyyy";
   if (dateHasTime(date)) {
     formatStr += ", p";
   }
