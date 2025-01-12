@@ -14,7 +14,7 @@ import {
   differenceInSeconds,
 } from "date-fns";
 import AboutPage from "./about/page";
-import { formatCollegeDecisionDate } from "$/lib/utils";
+import { dateHasTime, formatCollegeDecisionDate } from "$/lib/utils";
 
 function getFormattedDifference(date1: Date, date2: Date) {
   const start = new Date(date1);
@@ -118,7 +118,10 @@ function Countdown({ date }: { date: Date }) {
   const distance = getFormattedDifference(new Date(), date);
 
   if (distance === "") {
-    return "Decision is out!";
+    if (dateHasTime(date)) {
+      return "Decision is out!";
+    }
+    return "Decision set to come out today!";
   }
 
   return distance;
