@@ -14,6 +14,7 @@ import {
   differenceInSeconds,
 } from "date-fns";
 import AboutPage from "./about/page";
+import { formatCollegeDecisionDate } from "$/lib/utils";
 
 function getFormattedDifference(date1: Date, date2: Date) {
   const start = new Date(date1);
@@ -87,7 +88,7 @@ export default function Home() {
 
           <p className="font-semibold mb-1">{college.name}</p>
           <p className="mb-4">
-            {new Date(college.decisionDate).toLocaleString()}
+            {formatCollegeDecisionDate(new Date(college.decisionDate))}
           </p>
 
           <p className="text-lg mb-4">

@@ -11,6 +11,7 @@ import {
   type CustomCollege,
 } from "$/lib/atoms";
 import { Dialog, Transition } from "@headlessui/react";
+import { formatCollegeDecisionDate } from "$/lib/utils";
 
 export default function SelectColleges() {
   const { data } = useContext(DataContext)!;
@@ -135,7 +136,7 @@ export default function SelectColleges() {
               {college.tag}
             </p>
             <p className="tabular-nums">
-              {new Date(college.decisionDate).toLocaleString()}
+              {formatCollegeDecisionDate(new Date(college.decisionDate))}
             </p>
             <p>{college.notes}</p>
           </button>
@@ -180,7 +181,7 @@ function CustomCollege({
       >
         <p className="font-medium mb-1">{college.name}</p>
         <p className="tabular-nums">
-          {new Date(college.decisionDate).toLocaleString()}
+          {formatCollegeDecisionDate(new Date(college.decisionDate))}
         </p>
 
         <div className="mt-4 flex items-center justify-start gap-2">
