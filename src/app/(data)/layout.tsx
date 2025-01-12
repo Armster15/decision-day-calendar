@@ -193,7 +193,7 @@ export default async function Layout({ children }: PropsWithChildren) {
 
   const currentDate = new Date();
   const CLASS_YEAR =
-    // [Jan, July] => year + 5; [August, December] => year + 4
+    // [Jan, July] => year + 4; [August, December] => year + 5
     0 <= currentDate.getMonth() && currentDate.getMonth() <= 6
       ? currentDate.getFullYear() + 4
       : currentDate.getFullYear() + 5;
