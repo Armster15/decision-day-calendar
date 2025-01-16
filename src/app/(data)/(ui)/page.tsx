@@ -64,7 +64,7 @@ export default function Home() {
             {formatCollegeDecisionDate(new Date(college.decisionDate))}
           </p>
 
-          <p className="text-lg mb-4">
+          <p className="text-lg mb-4 min-h-[60px]">
             <Countdown date={new Date(college.decisionDate)} />
           </p>
 
