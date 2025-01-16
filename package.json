@@ -13,6 +13,7 @@
     "@splitbee/web": "^0.3.0",
     "clsx": "^2.1.1",
     "date-fns": "^4.1.0",
+    "humanize-duration": "^3.32.1",
     "jotai": "^2.11.0",
     "jsdom": "^25.0.1",
     "next": "15.1.3",
@@ -21,6 +22,7 @@
     "react-dom": "19.0.0"
   },
   "devDependencies": {
+    "@types/humanize-duration": "^3.27.4",
     "@types/jsdom": "^21.1.7",
     "@types/node": "^20",
     "@types/react": "19.0.3",
