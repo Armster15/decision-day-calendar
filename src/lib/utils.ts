@@ -45,9 +45,9 @@ const shortEnglishHumanizer = humanizeDuration.humanizer({
     shortEn: {
       mo: (count) => (count === 1 ? "month" : "months"),
       d: (count) => (count === 1 ? "day" : "days"),
-      h: (count) => (count === 1 ? "hour" : "hours"),
-      m: (count) => (count === 1 ? "minute" : "minutes"),
-      s: (count) => (count === 1 ? "second" : "seconds"),
+      h: (count) => (count === 1 ? "hr" : "hrs"),
+      m: (count) => "min",
+      s: (count) => (count === 1 ? "sec" : "secs"),
     },
   },
 });
