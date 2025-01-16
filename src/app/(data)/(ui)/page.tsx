@@ -5,39 +5,12 @@ import { DataContext } from "$/lib/context";
 import { useAtom } from "jotai";
 import { customCollegesAtom, selectedCollegeIdsAtom } from "$/lib/atoms";
 import Link from "next/link";
-import {
-  differenceInYears,
-  differenceInMonths,
-  differenceInDays,
-  differenceInHours,
-  differenceInMinutes,
-  differenceInSeconds,
-} from "date-fns";
 import AboutPage from "./about/page";
-import { dateHasTime, formatCollegeDecisionDate } from "$/lib/utils";
-
-function getFormattedDifference(date1: Date, date2: Date) {
-  const start = new Date(date1);
-  const end = new Date(date2);
-
-  const years = differenceInYears(end, start);
-  const months = differenceInMonths(end, start) % 12;
-  const days = differenceInDays(end, start) % 30;
-  const hours = differenceInHours(end, start) % 24;
-  const minutes = differenceInMinutes(end, start) % 60;
-  const seconds = differenceInSeconds(end, start) % 60;
-
-  // Build the result string
-  const parts = [];
-  if (years > 0) parts.push(`${years} yrs`);
-  if (months > 0) parts.push(`${months} months`);
-  if (days > 0) parts.push(`${days} days`);
-  if (hours > 0) parts.push(`${hours} hrs`);
-  if (minutes > 0) parts.push(`${minutes} mins`);
-  if (seconds > 0) parts.push(`${seconds} secs`);
-
-  return parts.join(" ");
-}
+import {
+  dateHasTime,
+  formatCollegeDecisionDate,
+  getFormattedDifference,
+} from "$/lib/utils";
 
 export default function Home() {
   const { data } = useContext(DataContext)!;
