@@ -1,11 +1,16 @@
-import { format as formatDate } from "date-fns";
 import {
+  addDays,
+  addHours,
+  addMinutes,
+  addMonths,
+  addYears,
   differenceInYears,
   differenceInMonths,
   differenceInDays,
   differenceInHours,
   differenceInMinutes,
   differenceInSeconds,
+  format as formatDate,
 } from "date-fns";
 
 export function formatCollegeDecisionDate(date: Date) {
@@ -35,11 +40,21 @@ export function getFormattedDifference(date1: Date, date2: Date) {
   const end = new Date(date2);
 
   const years = differenceInYears(end, start);
-  const months = differenceInMonths(end, start) % 12;
-  const days = differenceInDays(end, start) % 30;
-  const hours = differenceInHours(end, start) % 24;
-  const minutes = differenceInMinutes(end, start) % 60;
-  const seconds = differenceInSeconds(end, start) % 60;
+  const dateAfterYears = addYears(start, years);
+
+  const months = differenceInMonths(end, dateAfterYears);
+  const dateAfterMonths = addMonths(dateAfterYears, months);
+
+  const days = differenceInDays(end, dateAfterMonths);
+  const dateAfterDays = addDays(dateAfterMonths, days);
+
+  const hours = differenceInHours(end, dateAfterDays);
+  const dateAfterHours = addHours(dateAfterDays, hours);
+
+  const minutes = differenceInMinutes(end, dateAfterHours);
+  const dateAfterMinutes = addMinutes(dateAfterHours, minutes);
+
+  const seconds = differenceInSeconds(end, dateAfterMinutes);
 
   // Build the result string
   const parts = [];
