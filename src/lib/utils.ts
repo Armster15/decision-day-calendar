@@ -53,5 +53,11 @@ const shortEnglishHumanizer = humanizeDuration.humanizer({
 });
 
 export function getFormattedDifference(start: Date, end: Date) {
-  return shortEnglishHumanizer(+end - +start);
+  const ms = +end - +start;
+
+  if (ms <= 0) {
+    return "";
+  }
+
+  return shortEnglishHumanizer(ms);
 }
