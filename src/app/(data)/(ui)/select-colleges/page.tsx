@@ -1,6 +1,13 @@
 "use client";
 
-import { Fragment, useContext, useEffect, useId, useState } from "react";
+import {
+  Fragment,
+  useContext,
+  useEffect,
+  useId,
+  useMemo,
+  useState,
+} from "react";
 import { clsx } from "clsx";
 import { useQueryState, parseAsBoolean } from "nuqs";
 import { DataContext } from "$/lib/context";
@@ -18,7 +25,7 @@ export default function SelectColleges() {
   const [selectedCollegeIds, setSelectedCollegeIds] = useAtom(
     selectedCollegeIdsAtom
   );
-  const [customColleges] = useAtom(customCollegesAtom);
+  const [rawCustomColleges] = useAtom(customCollegesAtom);
 
   const formId = useId();
   const [showOnlySelectedColleges, setShowOnlySelectedColleges] = useQueryState(
@@ -37,7 +44,7 @@ export default function SelectColleges() {
     }
   }
 
-  const colleges = (() => {
+  const colleges = useMemo(() => {
     let colleges: typeof data = data;
 
     if (showOnlySelectedColleges) {
@@ -53,7 +60,25 @@ export default function SelectColleges() {
     }
 
     return colleges;
-  })();
+  }, [data, filterText, selectedCollegeIds, showOnlySelectedColleges]);
+
+  const customColleges = useMemo(() => {
+    let customColleges: typeof rawCustomColleges = rawCustomColleges;
+
+    if (showOnlySelectedColleges) {
+      customColleges = rawCustomColleges.filter((college) =>
+        selectedCollegeIds.includes(college.id)
+      );
+    }
+
+    if (filterText.trim() !== "") {
+      customColleges = rawCustomColleges.filter((college) =>
+        college.name.toLowerCase().includes(filterText.toLowerCase().trim())
+      );
+    }
+
+    return customColleges;
+  }, [rawCustomColleges, filterText, selectedCollegeIds, showOnlySelectedColleges]); // prettier-ignore
 
   return (
     <main>
