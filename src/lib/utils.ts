@@ -15,11 +15,22 @@ import {
 
 export function formatCollegeDecisionDate(date: Date) {
   let formatStr = "EEE MMM dd, yyyy";
-  if (dateHasTime(date)) {
+  const doesDateHaveTime = dateHasTime(date);
+
+  if (doesDateHaveTime) {
     formatStr += ", p";
   }
 
-  return formatDate(date, formatStr);
+  let str = formatDate(date, formatStr);
+
+  if (doesDateHaveTime) {
+    let timezone = getTimeZoneAbbreviation(date);
+    if (timezone) {
+      str += " " + timezone;
+    }
+  }
+
+  return str;
 }
 
 export function dateHasTime(date: Date) {
@@ -69,4 +80,11 @@ export function getFormattedDifference(date1: Date, date2: Date) {
     parts.push(`${seconds} ${pluralize("sec", "secs", seconds)}`);
 
   return parts.join(" ");
+}
+
+function getTimeZoneAbbreviation(date = new Date()) {
+  const formatter = new Intl.DateTimeFormat("en-US", { timeZoneName: "short" });
+  const parts = formatter.formatToParts(date);
+  const timeZonePart = parts.find((part) => part.type === "timeZoneName");
+  return timeZonePart ? timeZonePart.value : null;
 }
