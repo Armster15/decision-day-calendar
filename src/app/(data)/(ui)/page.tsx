@@ -90,10 +90,19 @@ function Countdown({ date }: { date: Date }) {
 
   const distance = getFormattedDifference(new Date(), date);
 
+  // AKA if new Date() > date
   if (distance === "") {
+    // If __not__ same day that means we know for sure the decision is out
+    if (date.toDateString() !== new Date().toDateString()) {
+      return "Decision is out!";
+    }
+
+    // If we know the specific time of the decision date, then we know for sure decision is out
     if (dateHasTime(date)) {
       return "Decision is out!";
     }
+
+    // Unknown whether decision is actually out or not
     return "Decision set to come out today!";
   }
 
