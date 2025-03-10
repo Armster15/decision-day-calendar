@@ -48,29 +48,40 @@ export default function Home() {
   return (
     <div className="grid sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 tabular-nums">
       {selectedColleges.map((college) => (
-        <div className="bg-white p-4" key={college.id}>
-          <img
-            src={`/get-favicon/${encodeURIComponent(
-              college.name + " Website"
-            )}`}
-            alt=""
-            width={64}
-            height={64}
-            className="mb-4 shadow h-[64px] w-[64px]"
-          />
+        <div
+          className="flex flex-col justify-between bg-white p-4"
+          key={college.id}
+        >
+          <div>
+            <img
+              src={`/get-favicon/${encodeURIComponent(
+                college.name + " Website"
+              )}`}
+              alt=""
+              width={64}
+              height={64}
+              className="mb-4 shadow h-[64px] w-[64px]"
+            />
 
-          <p className="font-semibold mb-1">{college.name}</p>
-          <p className="mb-4">
-            {formatCollegeDecisionDate(new Date(college.decisionDate))}
-          </p>
+            <p className="font-semibold mb-1">{college.name}</p>
+            <p className="mb-4">
+              {formatCollegeDecisionDate(new Date(college.decisionDate))}
+            </p>
 
-          <p className="text-lg mb-4 min-h-[60px]">
-            <Countdown date={new Date(college.decisionDate)} />
-          </p>
+            <p className="text-lg mb-4 min-h-[60px]">
+              <Countdown date={new Date(college.decisionDate)} />
+            </p>
+          </div>
 
-          {"confirmed" in college && (
-            <p className="mb-4 text-sm text-gray-500">{college.confirmed}</p>
-          )}
+          <div>
+            {"notes" in college && (
+              <p className="mb-4 text-base text-gray-500">{college.notes}</p>
+            )}
+
+            <p className="mb-4 text-sm text-gray-500">
+              {"confirmed" in college ? college.confirmed : "Custom"}
+            </p>
+          </div>
         </div>
       ))}
     </div>
