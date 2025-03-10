@@ -114,10 +114,15 @@ function rawDataToData(rawData: RawData): Data {
 function rawDateToDateString(rawDate: string): string {
   const standardOffsets = {
     EST: "-0500",
+    EDT: "-0400",
     CST: "-0600",
+    CDT: "-0500",
     MST: "-0700",
+    MDT: "-0600",
     PST: "-0800",
+    PDT: "-0700",
     AKST: "-0900",
+    AKDT: "-0800",
     HST: "-1000", // Hawaii doesn't observe DST
   };
 
@@ -143,10 +148,16 @@ function rawDateToDateString(rawDate: string): string {
   ) {
     if (timezone === "HST") return standardOffsets.HST; // Hawaii doesn't do DST
 
-    const standardOffset = standardOffsets[timezone];
+    // Convert DT timezones to their ST counterpart for checking
+    const baseTimezone = timezone.endsWith("DT")
+      ? (timezone.replace("DT", "ST") as keyof typeof standardOffsets)
+      : timezone;
+
+    // Get the standard offset for the base timezone
+    const standardOffset = standardOffsets[baseTimezone];
     if (!standardOffset) return null;
 
-    // During DST, move forward one hour (subtract 1 from offset)
+    // Always check if we're in DST period, regardless of timezone abbreviation
     return isDST(date)
       ? `${standardOffset.slice(0, 1)}${String(
           parseInt(standardOffset.slice(1)) - 100
