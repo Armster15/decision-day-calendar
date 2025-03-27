@@ -61,3 +61,7 @@ export function getFormattedDifference(start: Date, end: Date) {
 
   return shortEnglishHumanizer(ms);
 }
+
+export function isDateValid(date: Date) {
+  return date instanceof Date && isFinite(+date);
+}
